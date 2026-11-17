@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Coding Portfolio</title>
+
+  <!-- PyScript Core CSS & JS (Runs Python in the browser) -->
+  <link rel="stylesheet" href="https://pyscript.net" />
+  <script type="module" src="https://pyscript.net"></script>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem;
+    }
+    header { margin-bottom: 2.5rem; }
+    h1 { font-size: 2.2rem; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--accent); font-weight: 600; margin-top: 0; }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #334155;
+    }
+    h2 { margin-top: 0; font-size: 1.3rem; color: var(--accent); }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: white;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-bottom: 0.75rem;
+    }
+    button {
+      background: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover { opacity: 0.9; }
+    #output {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #0f172a;
+      border-radius: 8px;
+      min-height: 1.5rem;
+      color: #e2e8f0;
+    }
+    ul { padding-left: 1.25rem; color: var(--muted); }
+    li strong { color: var(--text); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Hi, I'm [Your Name]</h1>
+    <p class="subtitle">Aspiring Developer &amp; Python Builder</p>
+    <p>Welcome to my coding portfolio. I am documenting my journey as I learn Python, web fundamentals, and problem-solving through small interactive tools.</p>
+  </header>
+
+  <!-- Interactive Python Mini-Tool -->
+  <section class="card">
+    <h2>Live Python Tool: Password Strength Analyzer</h2>
+    <p>Type a sample password below to test it using real Python running directly in your browser via PyScript.</p>
+    <input type="text" id="pw-input" placeholder="Enter a test password..." />
+    <button py-click="check_password">Analyze with Python</button>
+    <div id="output">Waiting for input...</div>
+  </section>
+
+  <!-- Learning Roadmap (Replaces empty project list) -->
+  <section class="card">
+    <h2>Currently Learning &amp; Building</h2>
+    <ul>
+      <li><strong>Portfolio v1 (Completed):</strong> Built and deployed a static site on GitHub Pages with embedded Python.</li>
+      <li><strong>Python Fundamentals (In Progress):</strong> Practicing functions, string manipulation, and logic.</li>
+      <li><strong>Next Tool Idea:</strong> Building a text word-frequency counter and basic dice simulator.</li>
+    </ul>
+  </section>
+
+  <!-- Build Log -->
+  <section class="card">
+    <h2>Build Log</h2>
+    <p><strong>Why I built this site:</strong> Instead of waiting until I had big projects to launch a portfolio, I made the website itself my first project. Using PyScript allows me to run Python logic without needing a paid backend server.</p>
+  </section>
+
+  <!-- Python Logic -->
+  <script type="py">
+    from pyscript import document
+
+    def check_password(event):
+        pw = document.querySelector("#pw-input").value
+        out = document.querySelector("#output")
+
+        if not pw:
+            out.innerText = "Please enter a password first."
+            return
+
+        score = 0
+        tips = []
+
+        if len(pw) >= 8:
+            score += 1
+        else:
+            tips.append("use at least 8 characters")
+
+        if any(c.isupper() for c in pw):
+            score += 1
+        else:
+            tips.append("add an uppercase letter")
+
+        if any(c.isdigit() for c in pw):
+            score += 1
+        else:
+            tips.append("include a number")
+
+        if any(not c.isalnum() for c in pw):
+            score += 1
+        else:
+            tips.append("add a special symbol (!@#$)")
+
+        levels = {0: "Very Weak", 1: "Weak", 2: "Fair", 3: "Good", 4: "Strong"}
+        result = f"Strength: {levels[score]} ({score}/4)."
+
+        if tips:
+            result += " Tip: " + ", ".join(tips).capitalize() + "."
+
+        out.innerText = result
+  </script>
+
+</body>
+</html>
